@@ -26,7 +26,7 @@ def exp():
     print("\n[지수]\n- 문제유형 1, 2, 3, 4 총 4가지가 있습니다.\n")
     answer = -1
     while answer == -1:
-        answer = error_check(input("\n[지수]\n- 학습하고자하는 문제 유형을 입력해주세요.\n@@@ : 1\n@@@ : 2\n@@@ : 3\n@@@ : 4\n입력 : "), 0, 4)
+        answer = error_check(input("\n[지수]\n- 학습하고자하는 문제 유형을 입력해주세요.\n거듭제곱 : 1\n거듭제곱근(실수) : 2\n미정 : 3\n미정 : 4\n입력 : "), 0, 4)
     if answer != 0: # 0이라면 바로 종료
         count = 0
         for i in range(1, 6): # 5문제 출제
