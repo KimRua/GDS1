@@ -1,4 +1,5 @@
 import random
+import sympy as sp
 
 # 교과목 선택 함수
 def select_subject():
@@ -26,7 +27,7 @@ def exp():
     print("\n[지수]\n- 문제유형 1, 2, 3, 4 총 4가지가 있습니다.\n")
     answer = -1
     while answer == -1:
-        answer = error_check(input("\n[지수]\n- 학습하고자하는 문제 유형을 입력해주세요.\n거듭제곱 : 1\n거듭제곱근(실수) : 2\n미정 : 3\n미정 : 4\n입력 : "), 0, 4)
+        answer = error_check(input("\n[지수]\n- 학습하고자하는 문제 유형을 입력해주세요.\n거듭제곱 : 1\n지수법칙 : 2\n거듭제곱근(실수) : 3\n미정 : 4\n입력 : "), 0, 4)
     if answer != 0: # 0이라면 바로 종료
         count = 0
         for i in range(1, 6): # 5문제 출제
@@ -44,7 +45,13 @@ def exp_problem(index, category):
         b = random.randint(1, 8)
         result = a ** b
         print(f'{a}의 {b}제곱을 구하시오.')
-    elif category == 2: # 거듭제곱근
+    elif category == 2: # 지수법칙
+        x = sp.Symbol('x')
+        a = random.randint(1, 10)
+        b = random.randint(1, 10)
+        # *****************수정해야함****************
+        pass
+    elif category == 3: # 거듭제곱근
         problem_list = [[8, 3], [-8, 3],
                         [81, 4], [-81, 4],
                         [121, 2],
