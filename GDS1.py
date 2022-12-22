@@ -5,12 +5,14 @@ import sympy as sp
 def select_subject():
     answer = -1
     while answer == -1:
-        answer = error_check(input("\n[단원선택]\n- 학습하고자하는 단원을 선택해주세요.\n'지수' : 1\n'로그' : 2\n'삼각함수' : 3\n'수열' : 4\n입력 : "), 0, 4)
+        answer = input_filter(input("\n[단원선택]\n- 학습하고자하는 단원을 선택해주세요.\n'지수' : 1\n'로그' : 2\n'삼각함수' : 3\n'수열' : 4\n입력 : "), start=0, end=4)
     return answer
 
 # 입력 오류 확인 함수 (start~end사이의 정상 값이면 값을, 오류가 나거나 값을 벗어나면 -1을 리턴)
-def error_check(answer, start=0, end=0):
+def input_filter(answer, start=0, end=0, isStr=False):
     if answer == 'help' or answer == '도움': return help()
+    if isStr:
+        return answer.replace(' ', '')
     try: answer = eval(answer)
     except: return -1
     if isinstance(answer, tuple): return answer
@@ -27,7 +29,7 @@ def exp():
     print("\n[지수]\n- 문제유형 1, 2, 3, 4 총 4가지가 있습니다.\n")
     answer = -1
     while answer == -1:
-        answer = error_check(input("\n[지수]\n- 학습하고자하는 문제 유형을 입력해주세요.\n거듭제곱 : 1\n지수법칙 : 2\n거듭제곱근(실수) : 3\n미정 : 4\n입력 : "), 0, 4)
+        answer = input_filter(input("\n[지수]\n- 학습하고자하는 문제 유형을 입력해주세요.\n거듭제곱 : 1\n지수법칙 : 2\n거듭제곱근(실수) : 3\n지수가 실수인 경우 : 4\n입력 : "), start=0, end=4)
     if answer != 0: # 0이라면 바로 종료
         count = 0
         for i in range(1, 6): # 5문제 출제
@@ -46,11 +48,19 @@ def exp_problem(index, category):
         result = a ** b
         print(f'{a}의 {b}제곱을 구하시오.')
     elif category == 2: # 지수법칙
-        x = sp.Symbol('x')
+        operators = ['*', '/', '^']
+        operator = random.choice(operators)
         a = random.randint(1, 10)
         b = random.randint(1, 10)
-        # *****************수정해야함****************
-        pass
+        if operator == '*':
+            print(f'x^{a} * x^{b}')
+            result = 'x^' + str(a + b)
+        elif operator == '/':
+            print(f'x^{a} / x^{b}')
+            result = 'x^' + str(a - b) if a-b>0 else '1/x^' + str(b - a)
+        else:
+            print(f'(x^{a})^{b}')
+            result = 'x^' + str(a * b)
     elif category == 3: # 거듭제곱근
         problem_list = [[8, 3], [-8, 3],
                         [81, 4], [-81, 4],
@@ -62,8 +72,11 @@ def exp_problem(index, category):
         a, b = random.choice(problem_list)
         result = (round(abs(a) ** (1/b)), round(-abs(a) ** (1/b))) if b % 2 == 0 else (round(abs(a) ** (1/b) if a > 0 else round(-abs(a)**(1/b))))
         print(f'{a}의 {b}제곱근을 구하시오.')
+    elif category == 4: # 지수가 실수인 경우
+        result = 0
+        pass
 
-    answer = error_check(input('정답을 입력해주세요. : '))
+    answer = input_filter(input('정답을 입력해주세요. : '), isStr=True if category==2 else False)
     if result == answer:
         print('정답')
         return 1
@@ -71,7 +84,7 @@ def exp_problem(index, category):
         print('오답')
         return 0
     
-
+    
 # 지수 부분 완성 후 완성하기
 def log():
     return 0
