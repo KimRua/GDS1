@@ -19,6 +19,15 @@ def input_filter(answer, start=0, end=0, isStr=False):
     if start <= answer <= end or start==end: return answer
     else: return -1
 
+# 정답 확인 함수
+def result_check(result, answer):
+    if result == answer:
+        print('정답')
+        return 1
+    else:
+        print('오답')
+        return 0
+
 # help 메소드
 def help():
     print("\n[도움말]\n- 뒤로가기 : 0\n- 각 챕터마다\n답변 : 숫자\n형태로 주어짐.\n- 기본적으로 5문제 출제됨.\n- 정답이 두개 이상인 경우 괄호로 감싸 제출\n예 : (1, 2)")
@@ -62,13 +71,15 @@ def exp_problem(index, category):
             print(f'(x^{a})^{b}')
             result = 'x^' + str(a * b)
     elif category == 3: # 거듭제곱근
-        problem_list = [[8, 3], [-8, 3],
-                        [81, 4], [-81, 4],
-                        [121, 2],
-                        [64, 3], [-64, 3],
-                        [27, 3], [-27, 3],
-                        [64, 3], [-64, 3], 
-                        [16, 4], [-16, 4]]
+        problem_list = [
+            [8, 3], [-8, 3],
+            [81, 4], [-81, 4],
+            [121, 2],
+            [64, 3], [-64, 3],
+            [27, 3], [-27, 3],
+            [64, 3], [-64, 3], 
+            [16, 4], [-16, 4]
+        ]
         a, b = random.choice(problem_list)
         result = (round(abs(a) ** (1/b)), round(-abs(a) ** (1/b))) if b % 2 == 0 else (round(abs(a) ** (1/b) if a > 0 else round(-abs(a)**(1/b))))
         print(f'{a}의 {b}제곱근을 구하시오.')
@@ -77,17 +88,38 @@ def exp_problem(index, category):
         pass
 
     answer = input_filter(input('정답을 입력해주세요. : '), isStr=True if category==2 else False)
-    if result == answer:
-        print('정답')
-        return 1
-    else:
-        print('오답')
-        return 0
-    
-    
+    return result_check(result, answer)
+
 # 지수 부분 완성 후 완성하기
 def log():
-    return 0
+    print("\n[로그]\n- 문제유형 1, 2, 3, 4 총 4가지가 있습니다.\n")
+    answer = -1
+    while answer == -1:
+        answer = input_filter(input("\n[로그]\n- 학습하고자하는 문제 유형을 입력해주세요.\n로그 값 구하기 : 1\n로그의 사칙연산 : 2\n상용로그 : 3\n입력 : "), start=0, end=3)
+    if answer != 0: # 0이라면 바로 종료
+        count = 0
+        for i in range(1, 6): # 5문제 출제
+            count += log_problem(i, answer)
+        print(f'\n[결과]\n- {count}/5 문제 맞음. {count*20}점')
+    
+def log_problem(index, category):
+    print(f'\n[문제{index}]')
+    result = 0
+    if category == 1:
+        problem_list = [
+            [2, 16]
+        ]
+        pass
+    elif category == 2:
+        pass
+    elif category == 3:
+        pass
+    elif category == 4:
+        pass
+
+    answer = input_filter(input('정답을 입력해주세요. : '))
+    return result_check(result, answer)
+
 def trig():
     return 0
 def seq():
