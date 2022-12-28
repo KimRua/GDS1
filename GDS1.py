@@ -1,4 +1,5 @@
 import random
+import math
 import sympy as sp
 
 # 교과목 선택 함수
@@ -48,6 +49,7 @@ def exp():
 # 문제 몇 개 맞았는지, 무슨 문제를 맞고 무슨 문제를 틀렸는지, 원래답은 뭐고 뭐라고 대답했는데 등의 채점 결과
 
 # 문제 출제 함수 (랜덤, 매스, 그래프 등)
+# TODO: 마지막 문제 만들기
 def exp_problem(index, category):
     print(f'\n[문제{index}]')
     result = 0
@@ -90,7 +92,7 @@ def exp_problem(index, category):
     answer = input_filter(input('정답을 입력해주세요. : '), isStr=True if category==2 else False)
     return result_check(result, answer)
 
-# 지수 부분 완성 후 완성하기
+
 def log():
     print("\n[로그]\n- 문제유형 1, 2, 3, 4 총 4가지가 있습니다.\n")
     answer = -1
@@ -101,20 +103,32 @@ def log():
         for i in range(1, 6): # 5문제 출제
             count += log_problem(i, answer)
         print(f'\n[결과]\n- {count}/5 문제 맞음. {count*20}점')
-    
+
+# TODO: 2, 3문제 만들기   
 def log_problem(index, category):
     print(f'\n[문제{index}]')
     result = 0
-    if category == 1:
-        problem_list = [
-            [2, 16]
-        ]
+    if category == 1: # 로그 값 구하기 
+        num_list = [2, 3, 4, 5, 7, 10]
+        num1 = random.choice(num_list)
+        num2 = random.choice([num1**i for i in range(5)])
+        case = random.randint(1, 4)
+        if case == 1:
+            print(f'log_{num1} {num2}')
+        elif case == 2:
+            print(f'log_1/{num1} {num2}')
+            num1 = 1/num1
+        elif case == 3:
+            print(f'log_{num1} 1/{num2}')
+            num2 = 1/num2
+        else:
+            print(f'log_1/{num1} 1/{num2}')
+            num1 = 1/num1
+            num2 = 1/num2
+        result = round(math.log(num2, num1))
+    elif category == 2: # 로그의 사칙연산
         pass
-    elif category == 2:
-        pass
-    elif category == 3:
-        pass
-    elif category == 4:
+    elif category == 3: # 상용로그
         pass
 
     answer = input_filter(input('정답을 입력해주세요. : '))
