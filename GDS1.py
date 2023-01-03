@@ -1,6 +1,5 @@
-import random
-import math
-import sympy as sp
+import random, math, sys
+from fractions import Fraction
 
 # 교과목 선택 함수
 def select_subject():
@@ -10,11 +9,14 @@ def select_subject():
     return answer
 
 # 입력 오류 확인 함수 (start~end사이의 정상 값이면 값을, 오류가 나거나 값을 벗어나면 -1을 리턴)
-def input_filter(answer, start=0, end=0, isStr=False):
+def input_filter(answer, start=0, end=0, isStr=False, isExpression=False):
     if answer == 'help' or answer == '도움': return help()
-    if isStr:
-        return answer.replace(' ', '')
-    try: answer = eval(answer)
+    if isStr: return answer.replace(' ', '')
+    try: 
+        if isExpression:
+            a, b = map(int, answer.split('/'))
+            return round(a/b, 4)
+        answer = eval(answer)
     except: return -1
     if isinstance(answer, tuple): return answer
     if start <= answer <= end or start==end: return answer
@@ -46,7 +48,6 @@ def exp():
             count += exp_problem(i, answer)
         print(f'\n[결과]\n- {count}/5 문제 맞음. {count*20}점')
 
-# 문제 몇 개 맞았는지, 무슨 문제를 맞고 무슨 문제를 틀렸는지, 원래답은 뭐고 뭐라고 대답했는데 등의 채점 결과
 
 # 문제 출제 함수 (랜덤, 매스, 그래프 등)
 # TODO: 마지막 문제 만들기
@@ -92,19 +93,19 @@ def exp_problem(index, category):
     answer = input_filter(input('정답을 입력해주세요. : '), isStr=True if category==2 else False)
     return result_check(result, answer)
 
-
+# 로그 교과목
 def log():
     print("\n[로그]\n- 문제유형 1, 2, 3, 4 총 4가지가 있습니다.\n")
     answer = -1
     while answer == -1:
-        answer = input_filter(input("\n[로그]\n- 학습하고자하는 문제 유형을 입력해주세요.\n로그 값 구하기 : 1\n로그의 사칙연산 : 2\n상용로그 : 3\n입력 : "), start=0, end=3)
+        answer = input_filter(input("\n[로그]\n- 학습하고자하는 문제 유형을 입력해주세요.\n로그 값 구하기 : 1\n로그의 밑의 변환 : 2\n상용로그 : 3\n입력 : "), start=0, end=3)
     if answer != 0: # 0이라면 바로 종료
         count = 0
         for i in range(1, 6): # 5문제 출제
             count += log_problem(i, answer)
         print(f'\n[결과]\n- {count}/5 문제 맞음. {count*20}점')
 
-# TODO: 2, 3문제 만들기   
+# TODO: 3문제 만들기   
 def log_problem(index, category):
     print(f'\n[문제{index}]')
     result = 0
@@ -126,12 +127,21 @@ def log_problem(index, category):
             num1 = 1/num1
             num2 = 1/num2
         result = round(math.log(num2, num1))
-    elif category == 2: # 로그의 사칙연산
-        pass
+        answer = input_filter(input('정답을 입력해주세요. : '))
+    elif category == 2: # 로그의 밑의 변환
+        problem_list = [
+            [8, 16], [9, 27],
+            [25, 125], [4, 8],
+            [8, 32], [9, 243],
+            [4, 2], [8, 2]
+        ]
+        num1, num2 = random.choice(problem_list)
+        print(f'log_{num1} {num2}')
+        a = round(math.log(num2, num1), 4)
+        result = a
+        answer = input_filter(input('정답을 입력해주세요. : '), isExpression=True)
     elif category == 3: # 상용로그
         pass
-
-    answer = input_filter(input('정답을 입력해주세요. : '))
     return result_check(result, answer)
 
 def trig():
@@ -142,12 +152,11 @@ def seq():
 # 프로그램 종료 함수
 def exit():
     print("프로그램을 종료합니다.")
-    global main_switch
-    main_switch = False
-
+    sys.exit()
+    
 # 메인 함수
 def main():
-    print("[공돌수1]\n- 공돌수1 프로젝트는 1인 개발 프로젝트입니다.\n- 대한민국 수포자들을 돕기 위해 개발되었습니다.\n- 다양한 문제를 제한 없이 무료로 풀어볼 수 있습니다.\n- 도움이 필요하시면 -h 혹은 -help 혹은 '도움'을 입력해주세요.\n- 학생 여러분의 열정을 응원합니다.\n")
+    print("[공돌수1]\n- 공돌수1 프로젝트는 1인 개발 프로젝트입니다.\n- 대한민국 수포자들을 돕기 위해 개발되었습니다.\n- 다양한 문제를 제한 없이 풀어볼 수 있습니다.\n- 도움이 필요하시면 help 혹은 '도움'을 입력해주세요.\n")
     
     # 함수 모음 딕셔너리
     subject_list = {
@@ -158,13 +167,9 @@ def main():
         4 : seq
     }
     
-    while main_switch:
+    while True:
         answer = select_subject()
         subject_list[answer]()
-        
-# 프로그램 종료 스위치 선언
-global main_switch
-main_switch = True
 
 if __name__ == "__main__":
     main()
