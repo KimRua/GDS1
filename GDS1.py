@@ -1,4 +1,5 @@
-import random, math, sys
+import random, math
+from sys import exit
 
 # 교과목 선택 함수
 def select_subject():
@@ -179,9 +180,9 @@ def seq():
     return 0
 
 # 프로그램 종료 함수
-def exit():
+def end():
     print("프로그램을 종료합니다.")
-    sys.exit()
+    exit()
     
 # 메인 함수
 def main():
@@ -189,7 +190,7 @@ def main():
     
     # 함수 모음 딕셔너리
     subject_list = {
-        0 : exit,
+        0 : end,
         1 : exp,
         2 : log,
         3 : trig,
