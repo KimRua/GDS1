@@ -1,5 +1,5 @@
 import random, math
-from sys import exits
+from sys import exit
 
 # 교과목 선택 함수
 def select_subject():
