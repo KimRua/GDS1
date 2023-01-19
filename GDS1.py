@@ -180,7 +180,7 @@ def seq():
     return 0
 
 # 프로그램 종료 함수
-def end():
+def quit():
     print("프로그램을 종료합니다.")
     exit()
     
@@ -190,7 +190,7 @@ def main():
     
     # 함수 모음 딕셔너리
     subject_list = {
-        0 : end,
+        0 : quit,
         1 : exp,
         2 : log,
         3 : trig,
